@@ -25,19 +25,6 @@ namespace ConsoleApp6
         {
             NpgsqlConnection.Open();
 
-            //foreach (var point in Points)
-            //{
-            //    //if (point.Value <= -1700)
-            //    DangerousPoints.Add(point);
-            //}
-            //Points.Clear();
-
-            ////for (int i = 0; i < 10000000; i++)
-            ////{
-            ////    line.Add(new PointD(40.49, 49.24));
-            ////}
-            //DrawCells();
-
             NpgsqlCommand command = new NpgsqlCommand("SELECT * FROM public.\"Points\" WHERE \"Value\" > 500 OR \"Value\" < -1000;", NpgsqlConnection);
 
             //command.CommandText = "SELECT * FROM public.\"Points\" WHERE \"Value\" > 500 OR \"Value\" < -1000;";
@@ -52,99 +39,6 @@ namespace ConsoleApp6
                 };
                 DangerousPoints.Add(point);
             }
-
-            //var image = new Bitmap(256, 256);
-            //using (var g = Graphics.FromImage(image))
-            //{
-            //    g.SmoothingMode = SmoothingMode.AntiAlias;
-            //    g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            //    g.ScaleTransform(1.0f, -1.0f);
-            //    g.TranslateTransform(0, -256);
-            //    g.FillEllipse(new SolidBrush(Color.Red), new RectangleF(-5, 1, 50, 50));
-            //    image.Save($"C:\\Users\\AYDIN CEFEROV\\Downloads\\{0}A{0}A{0}.png");
-            //}
-
-            DrawCells2();
-        }
-        //    var cell = CurrentZoomCells.FirstOrDefault((obj) => { return obj.Y == LatIndex && obj.X == LngIndex; });
-        //                    if (cell == null)
-        //                    {
-        //                        cell = new Cell()
-        //    {
-        //        X = LngIndex,
-        //                            Y = LatIndex,
-        //                            Lat = (float)(LatMin + Ystep * LatIndex),
-        //                            Lng = (float)(LngMin + Xstep * LngIndex)
-        //                        };
-        //    CurrentZoomCells.Add(cell);
-        //                    }
-        //cell.Count++;
-        
-        public static void DrawCells2()
-        {
-            List<Cell> AllCells = new List<Cell>();
-            //List<Cell> CurrentZoomCells = new List<Cell>();
-            test[][] points = null;
-            double PreviousY = 0;
-            double PreviousX = 0;
-
-            for (int zoom = 19 - 1; zoom >= 0; zoom--)
-            {
-                int CountryWidth = 510428;
-                int CountryHeight = 413088;
-                int SquareWidth = 10 * (int)Math.Pow(19 - zoom, 1.5);
-                var LatMin = 38.3567089966;
-                var LngMin = 44.5243410194;
-                var Ystep = ((42.0716996794 - 38.3567089966) * SquareWidth) / CountryHeight;
-                var Xstep = ((50.7096437529 - 44.5243410194) * SquareWidth) / CountryWidth;
-                test[][] cells = new test[(int)(CountryHeight / SquareWidth)][];
-                //test[][] cells2 = new long[(int)(CountryHeight / SquareWidth)][];
-
-                for (int i = 0; i < cells.Length; i++)
-                {
-                    cells[i] = new test[(int)(CountryWidth / SquareWidth)];
-                }
-
-                Console.WriteLine("Started");
-                if (zoom == 18)
-                {
-                    for (int i = 0; i < DangerousPoints.Count; i++)
-                    {
-                        int LatIndex = (int)MathF.Floor((float)((DangerousPoints[i].Lat - LatMin) / Ystep));
-                        int LngIndex = (int)MathF.Floor((float)((DangerousPoints[i].Lng - LngMin) / Xstep));
-                        if (LatIndex < (int)(CountryHeight / SquareWidth) && LngIndex < (int)(CountryWidth / SquareWidth))
-                        {
-                            cells[LatIndex][LngIndex].Count++;
-                            cells[LatIndex][LngIndex].Value++;
-                        }
-                    }
-                }
-                else
-                {
-                    //for (int i = 0; i < DangerousPoints.Count; i++)
-                    //{
-                    //    int LatIndex = (int)MathF.Floor((float)((DangerousPoints[i].Lat - LatMin) / Ystep));
-                    //    int LngIndex = (int)MathF.Floor((float)((DangerousPoints[i].Lng - LngMin) / Xstep));
-                    //    int PreviousLatIndex = (int)MathF.Floor((float)((DangerousPoints[i].Lat - LatMin) / PreviousY));
-                    //    int PreviousLngIndex = (int)MathF.Floor((float)((DangerousPoints[i].Lng - LngMin) / PreviousX));
-                    //    if (LatIndex < (int)(CountryHeight / SquareWidth) && LngIndex < (int)(CountryWidth / SquareWidth))
-                    //    {
-                    //        cells[LatIndex][LngIndex].Count++;
-                    //        cells[LatIndex][LngIndex].Value += 0;
-                    //    }
-                    //}
-                }
-                for (int i = 0; i < cells.Length; i++)
-                {
-                    for (int j = 0; j < cells[i].Length; j++)
-                    {
-                        
-                    }
-
-                }
-                    //Console.WriteLine(i);
-                Console.WriteLine("finished");
-            }
         }
 
         //Lat - Y Lng - X
@@ -153,60 +47,59 @@ namespace ConsoleApp6
             List<Cell> AllCells = new List<Cell>();
             for (int zoom = 0; zoom < 19; zoom++)
             {
+                //Width of Azerbaijan (metr)
                 int CountryWidth = 510428;
+                //Height of Azerbaijan (metr)
                 int CountryHeight = 413088;
+                //width of the cell. It depends on zoom
                 int SquareWidth = 10 * (int)Math.Pow(19 - zoom, 1.5);
-                Console.WriteLine(SquareWidth);
+                //Creating two dimensional array
                 long[][] cells = new long[(int)(CountryHeight / SquareWidth)][];
                 long MaxCount = 0;
+                //Lat of the left bottom corner of Azerbaijan
                 var LatMin = 38.3567089966;
+                //Lng of the left bottom corner of Azerbaijan
                 var LngMin = 44.5243410194;
-                var Ystep = ((42.0716996794 - 38.3567089966) * SquareWidth) / CountryHeight;
-                var Xstep = ((50.7096437529 - 44.5243410194) * SquareWidth) / CountryWidth;
+                //step of the each cell
+                var LatStep = ((42.0716996794 - 38.3567089966) * SquareWidth) / CountryHeight;
+                //step of the each cell
+                var LngStep = ((50.7096437529 - 44.5243410194) * SquareWidth) / CountryWidth;
 
-
+                //Creating two dimensional array
                 for (int i = 0; i < cells.Length; i++)
-                {
                     cells[i] = new long[(int)(CountryWidth / SquareWidth)];
+
+                //Grouping dangerouspoints in the cells
+                for (int i = 0; i < DangerousPoints.Count; i++)
+                {
+                    //Find cell by point coords
+                    int LatIndex = (int)MathF.Floor((float)((DangerousPoints[i].Lat - LatMin) / LatStep));
+                    //Find cell by point coords
+                    int LngIndex = (int)MathF.Floor((float)((DangerousPoints[i].Lng - LngMin) / LngStep));
+
+                    //check cell coords 
+                    if (LatIndex < (int)(CountryHeight / SquareWidth) && LngIndex < (int)(CountryWidth / SquareWidth))
+                    {
+                        cells[LatIndex][LngIndex]++;
+                        if (cells[LatIndex][LngIndex] > MaxCount)
+                            MaxCount = cells[LatIndex][LngIndex];
+                    }
                 }
-                if (zoom == 18)
-                    for (int i = 0; i < DangerousPoints.Count; i++)
-                    {
-                        int LatIndex = (int)MathF.Floor((float)((DangerousPoints[i].Lat - LatMin) / Ystep));
-                        int LngIndex = (int)MathF.Floor((float)((DangerousPoints[i].Lng - LngMin) / Xstep));
-                        if (LatIndex < (int)(CountryHeight / SquareWidth) && LngIndex < (int)(CountryWidth / SquareWidth))
-                        {
-                            cells[LatIndex][LngIndex]++;
-                            if (cells[LatIndex][LngIndex] > MaxCount)
-                                MaxCount = cells[LatIndex][LngIndex];
-                        }
-                    }
-                
-                else
-                    for (int i = 0; i < AllCells.Count; i++)
-                    {
-                        int LatIndex = (int)MathF.Floor((float)((AllCells[i].Lat - LatMin) / Ystep));
-                        int LngIndex = (int)MathF.Floor((float)((AllCells[i].Lng - LngMin) / Xstep));
-                        //if (LatIndex < (int)(CountryHeight / SquareWidth) && LngIndex < (int)(CountryWidth / SquareWidth))
-                        //{
-                        //    cells[LatIndex][LngIndex] += AllCells[j].Count > 0 && AllCells[j].Count <= 3 * (19 - zoom) ? 0 : AllCells[j].Count > 3 * (19 - zoom) && AllCells[j].Count <= 15 * (19 - zoom) ? Color.Yellow : Color.Red
-                        //}
-                    }
-                Console.WriteLine("cells");
+
+                //Transfer all cells from two dimensional array to list where amount of dangerous point more than 0
                 for (int i = 0; i < cells.Length; i++)
                 {
                     for (int j = 0; j < cells[i].Length; j++)
                     {
                         if (cells[i][j] != 0)
                         {
-                            Count++;
                             var t = new Cell()
                             {
                                 Count = cells[i][j],
                                 X = j,
                                 Y = i,
-                                Lat = (float)(LatMin + Ystep * i),
-                                Lng = (float)(LngMin + Xstep * j)
+                                Lat = (float)(LatMin + LatStep * i),
+                                Lng = (float)(LngMin + LngStep * j)
                             };
                             AllCells.Add(t);
                         }
@@ -215,55 +108,77 @@ namespace ConsoleApp6
 
                 List<PointF> tile = new List<PointF>();
                 var image = new Bitmap(256, 256);
+
+                //Creating Graphics object which draw in image(png)
                 using (var g = Graphics.FromImage(image))
                 {
                     g.SmoothingMode = SmoothingMode.AntiAlias;
                     g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                    //g.ScaleTransform(1.0f, -1.0f);
-                    //g.TranslateTransform(0, -256);
+
                     for (int i = 0; i < AllCells.Count; i++)
                     {
-                        var x = long2tile(AllCells[i].Lng, zoom);
-                        var y = lat2tile(AllCells[i].Lat, zoom);
-                        if (!File.Exists($"C:\\Users\\AYDIN CEFEROV\\Downloads\\Cells\\{x}A{y}A{zoom}.png"))
+                        //Convert point Lat long to Tile(x,y)
+                        var tileX = long2tile(AllCells[i].Lng, zoom);
+                        var tileY = lat2tile(AllCells[i].Lat, zoom);
+
+                        //check if tile exists
+                        if (!File.Exists($"\\Cells\\{tileX}A{tileY}A{zoom}.png"))
                         {
-                            tile.Add(new PointF((float)tile2long(x, zoom), (float)tile2lat(y, zoom)));
-                            int temp1 = (int)MathF.Floor((x * 256 + 256) / 256);
-                            int temp2 = (int)MathF.Floor((y * 256 + 256) / 256);
-                            tile.Add(new PointF((float)tile2long(temp1, zoom), (float)tile2lat(temp2, zoom)));
+                            //add coords(lat,lng) left bottom of tile
+                            tile.Add(new PointF((float)tile2long(tileX, zoom), (float)tile2lat(tileY, zoom)));
+                            int tile2Lng = (int)MathF.Floor((tileX * 256 + 256) / 256);
+                            int tile2Lat = (int)MathF.Floor((tileY * 256 + 256) / 256);
+                            //add coords(lat,lng) right top of tile
+                            tile.Add(new PointF((float)tile2long(tile2Lng, zoom), (float)tile2lat(tile2Lat, zoom)));
+                            //find difference between right top corner and left bottom corner 
                             var difX = tile[1].X - tile[0].X;
                             var difY = tile[1].Y - tile[0].Y;
+                            //creating list which keep dangerous cells of current tile 
                             List<Rectangle> points = new List<Rectangle>();
+
+                            //pass over list of cells(10metrX10metr)
                             for (int j = 0; j < AllCells.Count; j++)
                             {
-                                if (AllCells[j].Lat <= tile[0].Y + Ystep && AllCells[j].Lat >= tile[1].Y - Ystep
-                                    && AllCells[j].Lng >= tile[0].X + Xstep && AllCells[j].Lng <= tile[1].X - Xstep)
+                                //check if cell(10mX10m) located in the current tile(256px 256px)
+                                if (AllCells[j].Lat <= tile[0].Y + LatStep && AllCells[j].Lat >= tile[1].Y - LatStep
+                                    && AllCells[j].Lng >= tile[0].X + LngStep && AllCells[j].Lng <= tile[1].X - LngStep)
                                 {
+                                    //add cell into list of dangerous cells 
+                                    //(Cell object consists of
+                                    //X - coord in png image 
+                                    //Y - coord in png image
+                                    //Lat - map coord of cell
+                                    //Lng - map coord of cell
+                                    //Width - width of cell (by default 10m X 10m) in the image
+                                    //Color - color of the cell)
+
+                                    //add cell to list                                    
                                     points.Add(new Rectangle()
                                     {
                                         X = (float)((AllCells[j].Lng - tile[0].X) * 256 / difX),
                                         Y = (float)((AllCells[j].Lat - tile[0].Y) * 256 / difY),
                                         Lat = AllCells[j].Lat,
                                         Lng = AllCells[j].Lng,
-                                        Width = (float)((AllCells[j].Lng + Xstep - tile[0].X) * 256 / difX) - (float)((AllCells[j].Lng - tile[0].X) * 256 / difX),
+                                        Width = (float)((AllCells[j].Lng + LngStep - tile[0].X) * 256 / difX) - (float)((AllCells[j].Lng - tile[0].X) * 256 / difX),
                                         Color = AllCells[j].Count > 0 && AllCells[j].Count <= 3 * (19 - zoom) ? Color.Green : AllCells[j].Count > 3 * (19 - zoom) && AllCells[j].Count <= 15 * (19 - zoom) ? Color.Yellow : Color.Red
                                     });
                                 }
                             }
+                            //pass over list of the dangerous cells and draw them
                             for (int j = 0; j < points.Count; j++)
-                            {
                                 g.FillEllipse(new SolidBrush(points[j].Color), points[j].X, points[j].Y, points[j].Width, points[j].Width);
-                                if (zoom == 17)
-                                    g.DrawString($"Lat: {points[j].Lat}, Lng: {points[j].Lng};", new Font(new FontFamily(System.Drawing.Text.GenericFontFamilies.Monospace), 7), new SolidBrush(Color.Black), new PointF(points[j].X, points[j].Y));
-                                //g.DrawRectangle(new Pen(Color.Black), points[j].X, points[j].Y, points[j].Width, points[j].Width);
-                            }
-                            image.Save($"C:\\Users\\AYDIN CEFEROV\\Downloads\\Cells\\{x}A{y}A{zoom}.png");
+                            //save image as png with specific name 
+                            image.Save($"\\Cells\\{tileX}A{tileY}A{zoom}.png");
+                            //clear list
                             tile.Clear();
+                            //clear graphics canvas
                             g.Clear(Color.White);
+                            //make canvas transparent
                             g.Clear(Color.Transparent);
                         }
                     }
                 }
+                //clear list
                 AllCells.Clear();
             }
         }
@@ -286,7 +201,7 @@ namespace ConsoleApp6
                     {
                         var x = long2tile(DangerousPoints[i].Lng, zoom);
                         var y = lat2tile(DangerousPoints[i].Lat, zoom);
-                        if (!File.Exists($"C:\\Users\\AYDIN CEFEROV\\Downloads\\PNG\\{x}A{y}A{zoom}.png"))
+                        if (!File.Exists($"\\PNG\\{x}A{y}A{zoom}.png"))
                         {
                             tile.Add(new PointF((float)tile2long(x, zoom), (float)tile2lat(y, zoom)));
                             int temp1 = (int)MathF.Floor((x * 256 + 256) / 256);
@@ -310,7 +225,7 @@ namespace ConsoleApp6
                             {
                                 g.FillEllipse(new SolidBrush(Color.Red), new RectangleF(points[j].X - 6f, points[j].Y - 6f, 12f, 12f));
                             }
-                            image.Save($"C:\\Users\\AYDIN CEFEROV\\Downloads\\PNG\\{x}A{y}A{zoom}.png");
+                            image.Save($"\\PNG\\{x}A{y}A{zoom}.png");
                             tile.Clear();
                             g.Clear(Color.White);
                             g.Clear(Color.Transparent);
@@ -320,13 +235,6 @@ namespace ConsoleApp6
                     g.Clear(Color.Transparent);
                 }
                 Console.WriteLine("Finished");
-                //g.FillRectangle(new SolidBrush(Color.Black), 0, 0, 256, 256);
-                //for (int i = 0; i < line.Count; i++)
-                //{
-                //    points[i] = new PointF((float)((line[i].X - tile[0].X) * 256 / difX), (float)((line[i].Y - tile[0].Y) * 256 / difY));
-                //}
-                //g.DrawLines(new Pen(Color.Green, 5), points);
-
             }
 
         }

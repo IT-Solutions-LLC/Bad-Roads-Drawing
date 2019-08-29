@@ -1131,11 +1131,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\AYDIN CEFEROV\\source\\repos\\ConsoleApp6\\ConsoleApp6\\ConsoleApp6.csproj",
+      "projectUniqueName": "C:\\Users\\AYDIN CEFEROV\\source\\repos\\Bad-Roads-Drawing\\ConsoleApp6\\ConsoleApp6\\ConsoleApp6.csproj",
       "projectName": "ConsoleApp6",
-      "projectPath": "C:\\Users\\AYDIN CEFEROV\\source\\repos\\ConsoleApp6\\ConsoleApp6\\ConsoleApp6.csproj",
+      "projectPath": "C:\\Users\\AYDIN CEFEROV\\source\\repos\\Bad-Roads-Drawing\\ConsoleApp6\\ConsoleApp6\\ConsoleApp6.csproj",
       "packagesPath": "C:\\Users\\AYDIN CEFEROV\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\AYDIN CEFEROV\\source\\repos\\ConsoleApp6\\ConsoleApp6\\obj\\",
+      "outputPath": "C:\\Users\\AYDIN CEFEROV\\source\\repos\\Bad-Roads-Drawing\\ConsoleApp6\\ConsoleApp6\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\ProgramData\\Xamarin\\NuGet\\",
